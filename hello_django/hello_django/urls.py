@@ -19,5 +19,9 @@ from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello/<nome>/<int:idade>', views.hello)  # para se criar uma nova rota, retorna um hello word
+    path('hello/<nome>/<int:idade>', views.hello),  # para se criar uma nova rota, retorna um hello word
+    path('soma/<numero1>/<numero2>', views.soma),
+    path('mult/<int:numero1>/<int:numero2>', views.multiplicacao),
+    path('divisao/<int:numero1>/<int:numero2>', views.divisao),
+    path('subtracao/<int:numero1>/<int:numero2>', views.subtracao)
 ]
