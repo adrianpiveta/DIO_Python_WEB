@@ -27,6 +27,9 @@ class Evento(models.Model):
     def get_data_evento (self):
         return self.data_evento.strftime('%d/%m/%Y %H:%M HRS') # formatacao horario
 
+    def get_data_input_evento(self):
+        return self.data_evento.strftime('%Y-%m-%dT%H:%M') #padrão que o navegador necessita no input
+
     # retorno da função, retorna titulo ao invés do objeto
     def __str__(self):
         return self.titulo

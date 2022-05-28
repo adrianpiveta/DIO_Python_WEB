@@ -43,20 +43,50 @@ def submit_login(request):
 
 @login_required(login_url= '/login')
 def evento(request):
-    return render(request, 'evento.html')
+    id=request.GET.get('id')
+    dados ={}
+    if(id):
+        dados['evento'] = Evento.objects.get(id = id)
+    return render(request, 'evento.html', dados)
 
 @login_required(login_url= '/login')
 def submit_evento(request):
     if(request.POST):
+
+
+        id_evento = request.POST.get('id_evento')
         titulo = request.POST.get('titulo')
         data_evento = request.POST.get('data_evento')
         descricao = request.POST.get('descricao')
+        local =  request.POST.get('local')
         usuario = request.user
-        Evento.objects.create(titulo=titulo,
+        print("ID: ", end='')
+        print(id_evento)
+        if id_evento:
+            evento = Evento.objects.get(id=id_evento)
+            print("rodei update")
+            if(evento.usuario== usuario):
+                Evento.objects.filter(id=id_evento).update(titulo=titulo,
+                                                       data_evento=data_evento,
+                                                       descricao=descricao,
+                                                       local=local)
+        else:
+            print("Rodei create")
+            Evento.objects.create(titulo=titulo,
                               data_evento=data_evento,
                               descricao=descricao,
-                              usuario=usuario)
+                              usuario=usuario,
+                              local=local)
     return redirect('/')
+
+@login_required(login_url= '/login/')
+def delete_evento(request, id_evento):
+    evento = Evento.objects.get(id=id_evento)
+    if (request.user == evento.usuario):
+        evento.delete()
+    return redirect('/')
+
+
 
 """
 def index(request):
