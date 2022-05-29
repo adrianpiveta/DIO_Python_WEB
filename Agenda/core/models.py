@@ -38,3 +38,10 @@ class Evento(models.Model):
     def get_evento_atrasado(self):
         if(self.data_evento < datetime.now()):
             return True
+
+    def get_evento_proximo(self):
+        if(self.data_evento > (datetime.now())
+                and self.data_evento < (datetime.now() + timedelta(hours=1))):
+            print(self.data_evento, datetime.now())
+            print((datetime.now() + timedelta(hours=1)))
+            return True

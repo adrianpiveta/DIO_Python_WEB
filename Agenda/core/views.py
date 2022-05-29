@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from django.conf.urls import handler404
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -7,6 +8,7 @@ from django.contrib import messages
 from django.http.response import Http404, JsonResponse
 
 # Create your views here.
+from core import models
 from core.models import Evento
 
 
@@ -25,6 +27,25 @@ def listaEventos(request):
         evento = None
     dados = {'eventos': evento}
     return render(request, 'agenda.html', dados)
+
+@login_required(login_url='/login/')
+def lista_eventos_passados(request):
+    usuario = request.user
+    data_atual = datetime.now()
+    try:
+        eventos = Evento.objects.filter(usuario = usuario)
+    except:
+        eventos =  None
+
+    eventos_retorno=[]
+    for evento in eventos:
+        if(evento.data_evento <datetime.now()):
+            eventos_retorno.append(evento)
+    print(eventos_retorno)
+    dados = {'eventos': eventos_retorno}
+    return render(request, 'agenda.html', dados)
+
+
 
 def login_user(request):
     return render(request, 'Login.html')
@@ -57,8 +78,6 @@ def evento(request):
 @login_required(login_url= '/login')
 def submit_evento(request):
     if(request.POST):
-
-
         id_evento = request.POST.get('id_evento')
         titulo = request.POST.get('titulo')
         data_evento = request.POST.get('data_evento')
@@ -69,14 +88,12 @@ def submit_evento(request):
         print(id_evento)
         if id_evento:
             evento = Evento.objects.get(id=id_evento)
-            print("rodei update")
             if(evento.usuario== usuario):
                 Evento.objects.filter(id=id_evento).update(titulo=titulo,
                                                        data_evento=data_evento,
                                                        descricao=descricao,
                                                        local=local)
         else:
-            print("Rodei create")
             Evento.objects.create(titulo=titulo,
                               data_evento=data_evento,
                               descricao=descricao,

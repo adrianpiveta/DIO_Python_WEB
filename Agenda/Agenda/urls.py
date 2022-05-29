@@ -13,7 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import handler404
 from django.contrib import admin
+from django.shortcuts import render
 from django.urls import path
 from core import views
 from django.views.generic import RedirectView
@@ -30,5 +32,9 @@ urlpatterns = [
     #path('/', RedirectView.as_view(url='login_user')),
     path('login/', views.login_user),
     path('login/submit', views.submit_login),
-    path('logout', views.logout_user)
+    path('logout', views.logout_user),
+    path('agendaPassada', views.lista_eventos_passados),
 ]
+
+def handler404(request, exception):
+    return render(request, '404.html')
