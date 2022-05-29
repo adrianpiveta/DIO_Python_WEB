@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime, timedelta
 
 
 # Create your models here.
@@ -33,3 +34,7 @@ class Evento(models.Model):
     # retorno da função, retorna titulo ao invés do objeto
     def __str__(self):
         return self.titulo
+
+    def get_evento_atrasado(self):
+        if(self.data_evento < datetime.now()):
+            return True
