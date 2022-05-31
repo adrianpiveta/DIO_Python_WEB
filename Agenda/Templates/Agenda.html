@@ -1,10 +1,12 @@
 {% extends "model-page.html" %}
 
 {% block content %}
+<div class="jumbotron text-center">
     <h2>Agendamentos</h2>
     <a href="evento/">
         <button type="button">Novo evento</button>
     </a>
+    <div clas="jumbotron text-center">
     <ul>
         {% for evento in eventos %}
              <li>
@@ -18,11 +20,13 @@
                          <a href="evento/?id={{ evento.id }}">Editar</a><!--Envia como parametro via get-->
                          <a href="evento/delete/{{ evento.id }}">Excluir</a>
                     </div>
-                 </div>
              </li>
         {% endfor %}
     </ul>
+    </div>
+</div>
 <style>
     ul{font-size:30px}
+</style>
 </style>
 {%endblock%}
